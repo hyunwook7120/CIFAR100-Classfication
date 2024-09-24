@@ -1,3 +1,13 @@
+# project
+cgv/data/
+cgv/runs/
+cgv/train_hayeon
+cgv/train_hyunwook
+cgv/train_nayoung
+
+# util
+util/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
