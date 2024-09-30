@@ -1,84 +1,107 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.nn.init as init
 
-# BasicBlock 정의
-class BasicBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, stride=1, downsample=None):
-        super(BasicBlock, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(out_channels)
-        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(out_channels)
-        self.shortcut = downsample
-
+# Bottleneck block for ResNetRS
+class Bottleneck(nn.Module):
+    expansion = 4
+    
+    def __init__(self, in_planes, planes, stride=1, downsample=None, drop_rate=0.0):
+        super(Bottleneck, self).__init__()
+        self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(planes)
+        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(planes)
+        self.conv3 = nn.Conv2d(planes, planes * 4, kernel_size=1, bias=False)
+        self.bn3 = nn.BatchNorm2d(planes * 4)
+        self.relu = nn.ReLU(inplace=True)
+        self.downsample = downsample
+        self.stride = stride
+        self.drop_rate = drop_rate
+        self.dropout = nn.Dropout(drop_rate)
+    
     def forward(self, x):
-        out = F.relu(self.bn1(self.conv1(x)))
-        out = self.bn2(self.conv2(out))
-        if self.shortcut is not None:  # shortcut이 None인지 확인
-            out += self.shortcut(x)  # shortcut 경로
-        else:
-            out += x  # shortcut이 None일 경우, 입력을 그대로 더함
-        out = F.relu(out)
+        identity = x
+        
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+        
+        out = self.conv2(out)
+        out = self.bn2(out)
+        out = self.relu(out)
+        
+        out = self.conv3(out)
+        out = self.bn3(out)
+        
+        if self.downsample is not None:
+            identity = self.downsample(x)
+        
+        out += identity
+        out = self.relu(out)
+        
+        # Apply dropout if drop_rate > 0
+        if self.drop_rate > 0:
+            out = self.dropout(out)
+        
         return out
 
-# ResNetRS 모델 정의
+# ResNetRS class
 class ResNetRS(nn.Module):
-    def __init__(self, block, num_blocks):
+    def __init__(self, block, layers, num_classes=1000, drop_rate=0.0):
         super(ResNetRS, self).__init__()
-        self.in_channels = 64
+        self.in_planes = 64
         self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
+        self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-        self.layer1 = self._make_layer(block, 64, num_blocks[0])
-        self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)  # stride=2 추가
-        self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)  # stride=2 추가
-        self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)  # stride=2 추가
-        self.fc = nn.Linear(512, 100)  # CIFAR-100 클래스 수에 맞춤
-        self.dropout = nn.Dropout(0.3) # 드롭아웃 비율 30%
-        self.initialize_weights() # 가중치 초기화 호출
-
-    def _make_layer(self, block, out_channels, blocks, stride=1):
-        downsample = None
-        if stride != 1 or self.in_channels != out_channels:
-            downsample = nn.Sequential(
-                nn.Conv2d(self.in_channels, out_channels, kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(out_channels),
-            )
-
-        layers = []
-        layers.append(block(self.in_channels, out_channels, stride, downsample))
-        self.in_channels = out_channels
-        for _ in range(1, blocks):
-            layers.append(block(out_channels, out_channels))
-
-        return nn.Sequential(*layers)
         
-    def initialize_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
-                init.xavier_uniform_(m.weight)  # Xavier 초기화
-                if m.bias is not None:
-                    init.zeros_(m.bias)  # 편향은 0으로 초기화
-
+        self.layer1 = self._make_layer(block, 64, layers[0], drop_rate=drop_rate)
+        self.layer2 = self._make_layer(block, 128, layers[1], stride=2, drop_rate=drop_rate)
+        self.layer3 = self._make_layer(block, 256, layers[2], stride=2, drop_rate=drop_rate)
+        self.layer4 = self._make_layer(block, 512, layers[3], stride=2, drop_rate=drop_rate)
+        
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fc = nn.Linear(512 * block.expansion, num_classes)
+    
+    def _make_layer(self, block, planes, blocks, stride=1, drop_rate=0.0):
+        downsample = None
+        if stride != 1 or self.in_planes != planes * block.expansion:
+            downsample = nn.Sequential(
+                nn.Conv2d(self.in_planes, planes * block.expansion, kernel_size=1, stride=stride, bias=False),
+                nn.BatchNorm2d(planes * block.expansion),
+            )
+        
+        layers = []
+        layers.append(block(self.in_planes, planes, stride, downsample, drop_rate))
+        self.in_planes = planes * block.expansion
+        for _ in range(1, blocks):
+            layers.append(block(self.in_planes, planes, drop_rate=drop_rate))
+        
+        return nn.Sequential(*layers)
+    
     def forward(self, x):
-        out = F.relu(self.bn1(self.conv1(x)))
-        out = self.maxpool(out)
-        out = self.layer1(out)
-        out = self.layer2(out)
-        out = self.layer3(out)
-        out = self.layer4(out)
-        out = F.adaptive_avg_pool2d(out, (1, 1))  # adaptive_avg_pool2d로 수정
-        out = out.view(out.size(0), -1)
-        out = self.dropout(out)
-        out = self.fc(out)  # softmax 활성화 함수 적용
-        return out
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
+        
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        x = self.fc(x)
+        
+        return x
+
+# Function to build ResNetRS-50
+def ResNetRS50(num_classes=100, drop_rate=0.0):
+    return ResNetRS(Bottleneck, [3, 4, 6, 3], num_classes=num_classes, drop_rate=drop_rate)
 
 
-# ResNetRS18 모델 생성 함수
-def ResNetRS18():
-    return ResNetRS(BasicBlock, [2, 2, 2, 2])
 
 # CIFAR-100 Superclass 및 Class 매핑
 CIFAR100_SUPERCLASS_MAPPING = {
