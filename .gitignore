@@ -1,13 +1,9 @@
-# project
-cgv/data/
-cgv/runs/
-cgv/train_hayeon
-cgv/train_hyunwook
-cgv/train_nayoung
-cgv/wandb
+#data
+cgv/data
 
-# util
-util/
+# project
+cgv/wandb
+cgv/runs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
