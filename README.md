@@ -64,13 +64,13 @@ elif you use test data for per-epoch training:
 - All per-epoch accuracy is test accuracy
 
 ### 6. Results
-| Model                  | Scheduler            | Optimizer | Augmentation | Memory       | Training Samples | Epochs | Top 1 Acc | Top 5 Acc | Super Acc |
-|------------------------|----------------------|-----------|--------------|--------------|-------------|--------|-----------|-----------|-----------|
-| ResNet_18              | MultiStepLR          | nesterov  | cutmix       | pinmemory    | 50000       | 250    | 81.36     | 95.59     | 88.98     |
-| Wide-ResNet_28-10      | ReduceLROnPlateau     | nesterov  | cutmix       | pinmemory    | 50000       | 300    | 82.22     | 96.12     | 89.81     |
-| ResNeXt_101            | ReduceLROnPlateau     | nesterov  | cutmix       | pinmemory    | 40000       | 250    | 80.33     | 95.65     | 88.78     |
-| PyramidNet             | ReduceLROnPlateau     | nesterov  | cutmix       | pinmemory    | 50000       | 300    | 82.28     | 96.52     | 90.04     |
-| PyramidNet_ShakeDrop   | ReduceLROnPlateau     | nesterov  | cutmix       | pinmemory    | 50000       | 300    | 84.77     | 97.28     | 91.72     |
+| Model                  | Scheduler            | Optimizer | Augmentation | Memory       | Training Samples | Epochs | Top 1 Acc | Top 5 Acc | Super Acc | Runtime |
+|------------------------|----------------------|-----------|--------------|--------------|-------------|--------|-----------|-------------|-----------|-------------|
+| ResNet_18              | MultiStepLR          | nesterov  | cutmix       | pin_memory    | 50000       | 250    | 81.36     | 95.59     | 88.98     | 4h 11m 37s |
+| Wide-ResNet_28-10      | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | 82.22     | 96.12     | 89.81     | 1d 1h 51m |
+| ResNeXt_101            | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 40000       | 250    | 80.33     | 95.65     | 88.78     | 6h 6m 43s |
+| PyramidNet             | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | 82.28     | 96.52     | 90.04     | 1d 15h 51m |
+| PyramidNet_ShakeDrop   | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | 84.77     | 97.28     | 91.72     | 23h 27m 41s|
 
 
 ### 7. Our Best Model
