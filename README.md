@@ -21,9 +21,12 @@ But you should be careful your CUDA Version is same with ours.
 - Training time (~24 time)
 - Can use single gpu
 
+---
+
 ## Usage
 ### 1. Dataset
 We conducted a project to classify images using the CIFAR100 dataset. 
+
 
 ### 2. Data Preprocessing
 - To Tensor()
@@ -60,31 +63,46 @@ If you use validation data for per-epoch training:
 elif you use test data for per-epoch training:
 - All per-epoch accuracy is test accuracy
 
-### 6. Our Best Model
+### 6. Results
+| Model                  | Scheduler            | Optimizer | Augmentation | Memory       | Training Samples | Epochs | Top 1 Acc | Top 5 Acc | Super Acc |
+|------------------------|----------------------|-----------|--------------|--------------|-------------|--------|-----------|-----------|-----------|
+| ResNet_18              | MultiStepLR          | nesterov  | cutmix       | pinmemory    | 50000       | 250    | 81.36     | 95.59     | 88.98     |
+| Wide-ResNet_28-10      | ReduceLROnPlateau     | nesterov  | cutmix       | pinmemory    | 50000       | 300    | 82.22     | 96.12     | 89.81     |
+| ResNeXt_101            | ReduceLROnPlateau     | nesterov  | cutmix       | pinmemory    | 40000       | 250    | 80.33     | 95.65     | 88.78     |
+| PyramidNet             | ReduceLROnPlateau     | nesterov  | cutmix       | pinmemory    | 50000       | 300    | 82.28     | 96.52     | 90.04     |
+| PyramidNet_ShakeDrop   | ReduceLROnPlateau     | nesterov  | cutmix       | pinmemory    | 50000       | 300    | 84.77     | 97.28     | 91.72     |
+
+
+### 7. Our Best Model
 - Model : Shake_pyramidnet (PyramidNet + Shake_drop)
-- batch_size : 128
-- num_epochs : 250
-- lr : 0.1
-- momentum : 0.9
-- weight_decay : 5e-4
-- nesterov : True
-- gamma(factor) : 0.2
-- warm : 1
-- plateau_patience : 15
-- pin_memory : True
-- depth : 110
-- alpha : 270
-- beta : 1.0
-  
-- resume : False
-- scheduler : ReduceLROnPlateau
-- train_50000 : True
+``` python
+  {
+  batch_size : 128,
+  num_epochs : 250,
+  lr : 0.1,
+  momentum : 0.9,
+  weight_decay : 5e-4,
+  nesterov : True,
+  gamma(factor) : 0.2,
+  warm : 1,
+  plateau_patience : 15,
+  pin_memory : True,
+  depth : 110,
+  alpha : 270,
+  beta : 1.0,
+    
+  resume : False,
+  scheduler : ReduceLROnPlateau,
+  train_50000 : True
+  }
+```
 
 | Top-1 Accuracy | Top-5 Accuracy | Super Class Accuracy | Total Accuracy |
 |----------------|----------------|----------------------|----------------|
 |      84.77     |      97.28     |         91.72        |      273.77    |
 
-### 7. Utility
+
+### 8. Utility
 This implements utils.py:
 - EarlyStopping
 - WarmUpLR
@@ -98,7 +116,7 @@ If you set "resume"=True or execute Best Model Test:
 p.s Resume is used when continuing model training from a saved checkpoint.
 Be careful when using the ReduceLROnScheduler, as the patience will be reset.
 
-### 8. Others
+### 9. Others
 (1) If you set tran_50000 == False:
 You can use two version of data splitting
 - RandomSampler
@@ -109,6 +127,8 @@ If you want to disable warmup scheduler, set "warm" = 0
 
 (3) If you want to use MultiStepLR Scheduler, set "scheduler" = "MultiStepLR".
 The learning rate will decrease by gamma when the epoch reaches the milestones.
+
+---
 
 ### Git Commit Rules
 | Tag Name           | Description                                               |
