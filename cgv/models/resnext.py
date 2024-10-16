@@ -1,3 +1,5 @@
+# https://github.com/weiaicunzai/pytorch-cifar100/blob/master/models/resnext.py
+
 """resnext in pytorch
 
 

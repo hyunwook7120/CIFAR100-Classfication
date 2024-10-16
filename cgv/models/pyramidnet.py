@@ -1,3 +1,5 @@
+# https://github.com/dyhan0920/PyramidNet-PyTorch/blob/master/PyramidNet.py
+
 import torch
 import torch.nn as nn
 import math
