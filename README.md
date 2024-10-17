@@ -59,7 +59,7 @@ wandb.init(project="CIFAR-100_Classification", name=config["model_name"], config
 ```
 If you want to disable wandb:
 ```python
-os.environ[“WANDB_DISABLED”] = “true”
+os.environ[“WANDB_DISABLED”] = 'true'
 ```
 
 ### 5. Train the model
