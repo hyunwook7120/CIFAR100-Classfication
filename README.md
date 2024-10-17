@@ -22,7 +22,7 @@ But you should be careful your CUDA Version is same with ours.
 - Can use single gpu
 
 ## Table of Usage
-- [Dataset](#dataset)
+- [Dataset](#1.Dataset)
 - [Data Preprocessing](#data-preprocessing)
 - [Data Augmentation](#data-augmentation)
 - [Run wandb(optional)](#run-wandb-optional)
@@ -34,7 +34,7 @@ But you should be careful your CUDA Version is same with ours.
 
 
 ## dataset
-### 1. Dataset
+### 1.Dataset
 We conducted a project to classify images using the CIFAR100 dataset.    
 
 ## data-preprocessing
