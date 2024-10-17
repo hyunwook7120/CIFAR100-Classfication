@@ -56,15 +56,12 @@ pip install wandb
 import wandb
 wandb.init(project="CIFAR-100_Classification", name=config["model_name"], config=config)
 ```
-If you want to disable wandb:
-```python
-os.environ[“WANDB_DISABLED”] = 'true'
-```
 
 ## Train-the-model
 You can use two baseline code:
-- baseline.ipynb (Cutmix X)
-- baseline_cutmix.ipynb (Cutmix O) <- **for our best model**
+- resnet_18.ipynb
+- shake_pyramidNet.ipynb
+- ensemble.ipynb <- **for our best model**
 
 If you use validation data for per-epoch training:
 - You can check the current best model's test accuracy using test.ipynb while simultaneously training the model.
@@ -140,15 +137,6 @@ The final Top-1 accuracy, Top-5 accuracy, and Super-Class accuracy are as follow
 This implements utils.py:
 - EarlyStopping
 - WarmUpLR
-
-If you set "resume"=True or execute Best Model Test:
-- best_acc_weights
-- last_epoch
-- most_recent_folder
-- most_recent_weights
-
-p.s Resume is used when continuing model training from a saved checkpoint.
-Be careful when using the ReduceLROnScheduler, as the patience will be reset.
 
 ## Others
 (1) If you set tran_50000 == False:
