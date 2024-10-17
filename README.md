@@ -25,8 +25,7 @@ But you should be careful your CUDA Version is same with ours.
 
 ## Usage
 ### 1. Dataset
-We conducted a project to classify images using the CIFAR100 dataset. 
-
+We conducted a project to classify images using the CIFAR100 dataset.    
 
 ### 2. Data Preprocessing
 - To Tensor()
@@ -64,21 +63,46 @@ elif you use test data for per-epoch training:
 - All per-epoch accuracy is test accuracy
 
 ### 6. Results
-| Model                  | Scheduler            | Optimizer | Augmentation | Memory       | Training Samples | Epochs | Top 1 Acc | Top 5 Acc | Super Acc | Runtime |
-|------------------------|----------------------|-----------|--------------|--------------|-------------|--------|-----------|-------------|-----------|-------------|
-| ResNet_18              | MultiStepLR          | nesterov  | cutmix       | pin_memory    | 50000       | 250    | 81.36     | 95.59     | 88.98     | 4h 11m 37s |
-| Wide-ResNet_28-10      | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | 82.22     | 96.12     | 89.81     | 1d 1h 51m |
-| ResNeXt_101            | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 40000       | 250    | 80.33     | 95.65     | 88.78     | 6h 6m 43s |
-| PyramidNet             | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | 82.28     | 96.52     | 90.04     | 1d 15h 51m |
-| PyramidNet_ShakeDrop   | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | 84.77     | 97.28     | 91.72     | 23h 27m 41s|
+| Model                  | Scheduler            | Optimizer | Augmentation | Memory       | Training Samples | Epochs | Best Epochs |Top 1 Acc | Top 5 Acc | Super Acc | Runtime |
+|------------------------|----------------------|-----------|--------------|--------------|-------------|--------|--------------|-----------|-------------|-----------|-------------|
+| ResNet_18              | MultiStepLR          | nesterov  | cutmix       | pin_memory    | 50000       | 250    | 240    | 81.36     | 95.59     | 88.98     | 4h 11m 37s |
+| Wide-ResNet_28-10      | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | - | 82.22     | 96.12     | 89.81     | 1d 1h 51m |
+| ResNeXt_101            | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 40000       | 250    | - | 80.33     | 95.65     | 88.78     | 6h 6m 43s |
+| PyramidNet             | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | - | 82.28     | 96.52     | 90.04     | 1d 15h 51m |
+| PyramidNet_ShakeDrop   | ReduceLROnPlateau     | nesterov  | cutmix       | pin_memory    | 50000       | 300    | 210    | 84.77     | 97.28     | 91.72     | 23h 27m 41s|
 
 
 ### 7. Our Best Model
-- Model : Shake_pyramidnet (PyramidNet + Shake_drop)
+We conducted model ensemble by combining Shakedrop + PyramidNet, which had the highest accuracy, and ResNet18 with CutMix, which had relatively high accuracy and a shorter runtime. The final Top-1 accuracy, Top-5 accuracy, and Super-Class accuracy are as follows.
+
+- Model : ResNet18 + PyramidNet_Shakedrop
+- ResNet18
 ``` python
   {
   batch_size : 128,
-  num_epochs : 250,
+  num_epochs : 240,
+  lr : 0.1,
+  momentum : 0.9,
+  weight_decay : 5e-4,
+  nesterov : True,
+  gamma(factor) : 0.2,
+  warm : 1,
+  plateau_patience : 15,
+  pin_memory : True,
+  depth : 110,
+  alpha : 270,
+  beta : 1.0,
+    
+  resume : False,
+  scheduler : ReduceLROnPlateau,
+  train_50000 : True
+  }
+```
+- PyramidNet_Shakedrop
+``` python
+  {
+  batch_size : 128,
+  num_epochs : 210,
   lr : 0.1,
   momentum : 0.9,
   weight_decay : 5e-4,
@@ -97,9 +121,10 @@ elif you use test data for per-epoch training:
   }
 ```
 
+
 | Top-1 Accuracy | Top-5 Accuracy | Super Class Accuracy | Total Accuracy |
 |----------------|----------------|----------------------|----------------|
-|      84.77     |      97.28     |         91.72        |      273.77    |
+|      85.31     |      97.47     |         91.94        |      274.72    |
 
 
 ### 8. Utility
