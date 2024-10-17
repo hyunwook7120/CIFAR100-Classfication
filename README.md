@@ -56,6 +56,7 @@ pip install wandb
 import wandb
 wandb.init(project="CIFAR-100_Classification", name=config["model_name"], config=config)
 ```
+Remove wandb annotation
 
 ## Train-the-model
 You can use two baseline code:
