@@ -22,6 +22,17 @@ But you should be careful your CUDA Version is same with ours.
 - Can use single gpu
 
 ---
+## Table of Usage
+- [Dataset](#dataset)
+- [Data Preprocessing](#data-preprocessing)
+- [Data Augmentation](#data-augmentation)
+- [Run wandb(optional)](#run-wandb-optional)
+- [Train the model](#train-the-model)
+- [Results](#results)
+- [Our Best Model](#our-best-model)
+- [Utility](#utility)
+- [Others](#others)
+---
 
 ## Usage
 ### 1. Dataset
@@ -55,7 +66,7 @@ os.environ[“WANDB_DISABLED”] = “true”
 ### 5. Train the model
 You can use two baseline code:
 - baseline.ipynb (Cutmix X)
-- baseline_cutmix.ipynb (Cutmix O) <- for our best model
+- baseline_cutmix.ipynb (Cutmix O) <- **for our best model**
 
 If you use validation data for per-epoch training:
 - You can check the current best model's test accuracy using test.ipynb while simultaneously training the model.
