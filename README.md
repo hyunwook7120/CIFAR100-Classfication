@@ -37,17 +37,20 @@ But you should be careful your CUDA Version is same with ours.
 ### 1. Dataset
 We conducted a project to classify images using the CIFAR100 dataset.    
 
+## data-preprocessing
 ### 2. Data Preprocessing
 - To Tensor()
 - Normalize(CIFAR100_TRAIN_MEAN, CIFAR100_TRAIN_STD)
 - CIFAR100_TRAIN_MEAN = (0.5070751592371323, 0.48654887331495095, 0.4409178433670343)
 - CIFAR100_TRAIN_STD = (0.2673342858792401, 0.2564384629170883, 0.27615047132568404)
 
+## data-augmentation
 ### 3. Data Augmentation
 - RandomCrop(32, padding=4)
 - RandomHorizontalFlip()
 - CutMix
-  
+
+## run-wandb-optional
 ### 4. Run wandb(optional)
 Install wandb
 ```bash
@@ -62,6 +65,7 @@ If you want to disable wandb:
 os.environ[“WANDB_DISABLED”] = 'true'
 ```
 
+## train-the-model
 ### 5. Train the model
 You can use two baseline code:
 - baseline.ipynb (Cutmix X)
@@ -72,6 +76,7 @@ If you use validation data for per-epoch training:
 elif you use test data for per-epoch training:
 - All per-epoch accuracy is test accuracy
 
+## results
 ### 6. Results
 | Model                  | Scheduler            | Optimizer | Augmentation | Memory       | Training Samples | Epochs | Best Epochs |Top 1 Acc | Top 5 Acc | Super Acc | Runtime |
 |------------------------|----------------------|-----------|--------------|--------------|-------------|--------|--------------|-----------|-------------|-----------|-------------|
@@ -83,6 +88,7 @@ elif you use test data for per-epoch training:
 
 At this time, "Runtime" refers to the total time, including model training time, evaluation time, and data analysis time.
 
+## our-best-model
 ### 7. Our Best Model
 We conducted model ensemble by combining Shakedrop + PyramidNet, which had the highest accuracy, and ResNet18 with CutMix, which had relatively high accuracy and a shorter runtime. 
 
@@ -137,6 +143,7 @@ The final Top-1 accuracy, Top-5 accuracy, and Super-Class accuracy are as follow
 |      85.31     |      97.47     |         91.94        |      274.72    |
 
 
+## utility
 ### 8. Utility
 This implements utils.py:
 - EarlyStopping
@@ -151,6 +158,7 @@ If you set "resume"=True or execute Best Model Test:
 p.s Resume is used when continuing model training from a saved checkpoint.
 Be careful when using the ReduceLROnScheduler, as the patience will be reset.
 
+## others
 ### 9. Others
 (1) If you set tran_50000 == False:
 You can use two version of data splitting
