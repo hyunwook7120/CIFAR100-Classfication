@@ -34,24 +34,20 @@ But you should be careful your CUDA Version is same with ours.
 
 
 ## Dataset
-### 1.Dataset
 We conducted a project to classify images using the CIFAR100 dataset.    
 
 ## Data-preprocessing
-### 2. Data Preprocessing
 - To Tensor()
 - Normalize(CIFAR100_TRAIN_MEAN, CIFAR100_TRAIN_STD)
 - CIFAR100_TRAIN_MEAN = (0.5070751592371323, 0.48654887331495095, 0.4409178433670343)
 - CIFAR100_TRAIN_STD = (0.2673342858792401, 0.2564384629170883, 0.27615047132568404)
 
 ## Data-augmentation
-### 3. Data Augmentation
 - RandomCrop(32, padding=4)
 - RandomHorizontalFlip()
 - CutMix
 
 ## Run-wandb-optional
-### 4. Run wandb(optional)
 Install wandb
 ```bash
 pip install wandb
@@ -66,7 +62,6 @@ os.environ[“WANDB_DISABLED”] = 'true'
 ```
 
 ## Train-the-model
-### 5. Train the model
 You can use two baseline code:
 - baseline.ipynb (Cutmix X)
 - baseline_cutmix.ipynb (Cutmix O) <- **for our best model**
@@ -77,7 +72,6 @@ elif you use test data for per-epoch training:
 - All per-epoch accuracy is test accuracy
 
 ## Results
-### 6. Results
 | Model                  | Scheduler            | Optimizer | Augmentation | Memory       | Training Samples | Epochs | Best Epochs |Top 1 Acc | Top 5 Acc | Super Acc | Runtime |
 |------------------------|----------------------|-----------|--------------|--------------|-------------|--------|--------------|-----------|-------------|-----------|-------------|
 | ResNet_18              | MultiStepLR          | NAG  | cutmix       | pin_memory    | 50000       | 250    | 240    | 81.36     | 95.59     | 88.98     | 4h 11m 37s |
@@ -89,7 +83,6 @@ elif you use test data for per-epoch training:
 At this time, "Runtime" refers to the total time, including model training time, evaluation time, and data analysis time.
 
 ## Our-best-model
-### 7. Our Best Model
 We conducted model ensemble by combining Shakedrop + PyramidNet, which had the highest accuracy, and ResNet18 with CutMix, which had relatively high accuracy and a shorter runtime. 
 
 - Model : ResNet18 + PyramidNet_Shakedrop
@@ -144,7 +137,6 @@ The final Top-1 accuracy, Top-5 accuracy, and Super-Class accuracy are as follow
 
 
 ## Utility
-### 8. Utility
 This implements utils.py:
 - EarlyStopping
 - WarmUpLR
@@ -159,7 +151,6 @@ p.s Resume is used when continuing model training from a saved checkpoint.
 Be careful when using the ReduceLROnScheduler, as the patience will be reset.
 
 ## Others
-### 9. Others
 (1) If you set tran_50000 == False:
 You can use two version of data splitting
 - RandomSampler
