@@ -77,7 +77,7 @@ At this time, "Runtime" refers to the total time, including model training time,
 We conducted model ensemble by combining Shakedrop + PyramidNet, which had the highest accuracy, and ResNet18 with CutMix, which had relatively high accuracy and a shorter runtime. 
 
 - Model : ResNet18 + PyramidNet_Shakedrop
-- Parameters of ResNe :
+- Parameters of ResNet_18 :
 ``` python
   {
   batch_size : 128,
