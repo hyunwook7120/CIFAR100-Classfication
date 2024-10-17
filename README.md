@@ -60,8 +60,8 @@ If you want to use wandb, remove wandb annotation
 
 ## Train-the-model
 You can use two baseline code:
-- resnet18.ipynb <- net1 (ensemble 0.3)
-- shakepyramidnet.ipynb <- net2 (ensemble 0.7)
+- resnet18.ipynb <- net1 (ensemble 0.4)
+- shakepyramidnet.ipynb <- net2 (ensemble 0.6)
 - ensemble.ipynb <- **for our best model**
 
 If you use validation data for per-epoch training:
@@ -131,7 +131,7 @@ We conducted model ensemble by combining **Shakedrop + PyramidNet**, which had t
 The final Top-1 accuracy, Top-5 accuracy, and Super-Class accuracy are as follows.
 | Top-1 Accuracy | Top-5 Accuracy | Super Class Accuracy | Total Accuracy |
 |----------------|----------------|----------------------|----------------|
-|     **85.31**     |      **97.47**     |         **91.94**        |    **274.72**  |
+|     **85.43**     |      **97.40**     |         **91.98**        |    **274.81**  |
 
 
 ## Utility
