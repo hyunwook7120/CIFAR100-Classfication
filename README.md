@@ -21,7 +21,6 @@ But you should be careful your CUDA Version is same with ours.
 - Training time (~24 time)
 - Can use single gpu
 
----
 ## Table of Usage
 - [Dataset](#dataset)
 - [Data Preprocessing](#data-preprocessing)
@@ -164,7 +163,6 @@ If you want to disable warmup scheduler, set "warm" = 0
 (3) If you want to use MultiStepLR Scheduler, set "scheduler" = "MultiStepLR".
 The learning rate will decrease by gamma when the epoch reaches the milestones.
 
----
 
 ### Git Commit Rules
 | Tag Name           | Description                                               |
