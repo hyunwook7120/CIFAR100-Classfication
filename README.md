@@ -72,16 +72,16 @@ elif you use test data for per-epoch training:
 ## Results
 | Model                  | Scheduler            | Optimizer | Augmentation | Memory       | Training Samples | Epochs | Best Epochs |Top 1 Acc | Top 5 Acc | Super Acc | Runtime |
 |------------------------|----------------------|-----------|--------------|--------------|-------------|--------|--------------|-----------|-------------|-----------|-------------|
-| ResNet_18              | MultiStepLR          | NAG  | cutmix       | pin_memory    | 50000       | 250    | 240    | 81.36     | 95.59     | 88.98     | 4h 11m 37s |
+| **ResNet_18**          | MultiStepLR          | NAG  | cutmix       | pin_memory    | 50000       | 250    | 240    | **81.36**     | **95.59**     | **88.98**     | 4h 11m 37s |
 | Wide-ResNet_28-10      | ReduceLROnPlateau     | NAG  | cutmix       | pin_memory    | 50000       | 300    | - | 82.22     | 96.12     | 89.81     | 1d 1h 51m |
 | ResNeXt_101            | ReduceLROnPlateau     | NAG  | cutmix       | pin_memory    | 40000       | 250    | - | 80.33     | 95.65     | 88.78     | 6h 6m 43s |
 | PyramidNet             | ReduceLROnPlateau     | NAG  | cutmix       | pin_memory    | 50000       | 300    | - | 82.28     | 96.52     | 90.04     | 1d 15h 51m |
-| PyramidNet_ShakeDrop   | ReduceLROnPlateau     | NAG  | cutmix       | pin_memory    | 50000       | 300    | 210    | 84.77     | 97.28     | 91.72     | 23h 27m 41s|   
+| **PyramidNet_ShakeDrop**   | ReduceLROnPlateau     | NAG  | cutmix       | pin_memory    | 50000       | 250    | 210    | **84.77**     | **97.28**     | **91.72**     | 23h 27m 41s|   
 
 At this time, "Runtime" refers to the total time, including model training time, evaluation time, and data analysis time.
 
 ## Our-best-model
-We conducted model ensemble by combining Shakedrop + PyramidNet, which had the highest accuracy, and ResNet18 with CutMix, which had relatively high accuracy and a shorter runtime. 
+We conducted model ensemble by combining **Shakedrop + PyramidNet**, which had the highest accuracy, and **ResNet18** with CutMix, which had relatively high accuracy and a shorter runtime. 
 
 - Model : ResNet18 + PyramidNet_Shakedrop
 - Parameters of ResNet_18 :
@@ -102,7 +102,7 @@ We conducted model ensemble by combining Shakedrop + PyramidNet, which had the h
   beta : 1.0,
     
   resume : False,
-  scheduler : ReduceLROnPlateau,
+  scheduler : MultiStepLR,
   train_50000 : True
   }
 ```
@@ -131,7 +131,7 @@ We conducted model ensemble by combining Shakedrop + PyramidNet, which had the h
 The final Top-1 accuracy, Top-5 accuracy, and Super-Class accuracy are as follows.
 | Top-1 Accuracy | Top-5 Accuracy | Super Class Accuracy | Total Accuracy |
 |----------------|----------------|----------------------|----------------|
-|      85.31     |      97.47     |         91.94        |      274.72    |
+|      85.31     |      97.47     |         91.94        |    **274.72**  |
 
 
 ## Utility
