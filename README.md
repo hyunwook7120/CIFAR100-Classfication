@@ -60,8 +60,8 @@ If you want to use wandb, remove wandb annotation
 
 ## Train-the-model
 You can use two baseline code:
-- resnet_18.ipynb
-- shake_pyramidNet.ipynb
+- resnet18.ipynb <- net1 (ensemble 0.3)
+- shakepyramidnet.ipynb <- net2 (ensemble 0.7)
 - ensemble.ipynb <- **for our best model**
 
 If you use validation data for per-epoch training:
