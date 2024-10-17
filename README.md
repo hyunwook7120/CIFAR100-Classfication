@@ -23,7 +23,7 @@ But you should be careful your CUDA Version is same with ours.
 
 ## Table of Usage
 - [Dataset](#dataset)
-- [Data Preprocessing](###data-preprocessing)
+- [Data Preprocessing](#data-preprocessing)
 - [Data Augmentation](#data-augmentation)
 - [Run wandb(optional)](#run-wandb-optional)
 - [Train the model](#train-the-model)
@@ -33,7 +33,7 @@ But you should be careful your CUDA Version is same with ours.
 - [Others](#others)
 
 
-## Usage
+## dataset
 ### 1. Dataset
 We conducted a project to classify images using the CIFAR100 dataset.    
 
