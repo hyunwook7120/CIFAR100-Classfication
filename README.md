@@ -131,7 +131,7 @@ We conducted model ensemble by combining **Shakedrop + PyramidNet**, which had t
 The final Top-1 accuracy, Top-5 accuracy, and Super-Class accuracy are as follows.
 | Top-1 Accuracy | Top-5 Accuracy | Super Class Accuracy | Total Accuracy |
 |----------------|----------------|----------------------|----------------|
-|      85.31     |      97.47     |         91.94        |    **274.72**  |
+|     **85.31**     |      **97.47**     |         **91.94**        |    **274.72**  |
 
 
 ## Utility
