@@ -7,7 +7,7 @@ This is our experiment environment
 1. python3.8
 2. pytorch 2.1.2+cu121
 3. wandb 0.18.2(optional)
-4. RTX 4000
+4. RTX A4000
 
 If your virtual environment meets upper conditions, you can use
 ```bash
